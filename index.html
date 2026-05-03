@@ -31,16 +31,8 @@ body{background:#ede8df;min-height:100vh;display:flex;align-items:flex-start;jus
 .ey{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--lm);margin-bottom:6px;font-family:'Cormorant Garamond',serif;}
 .hd{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;font-style:italic;color:var(--dark);margin-bottom:18px;}
 .orn{text-align:center;color:var(--border);font-size:13px;letter-spacing:.4em;margin:22px 0;font-family:'Cormorant Garamond',serif;}
-
-/* API key prompt */
-.apikey-wrap{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:22px 24px;margin-bottom:16px;}
-.apikey-wrap p{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:10px;line-height:1.6;}
-.apikey-wrap a{color:var(--accent);text-decoration:none;}
-.apikey-wrap a:hover{text-decoration:underline;}
-.apikey-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.apikey-row input{flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--border);border-radius:5px;background:var(--card);font-family:'EB Garamond',serif;font-size:15px;color:var(--ink);outline:none;transition:border .2s;}
-.apikey-row input:focus{border-color:var(--accent);}
-
+ 
+ 
 /* Mood */
 .mood-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px;}
 @media(max-width:480px){.mood-grid{grid-template-columns:repeat(3,1fr);}}
@@ -53,13 +45,13 @@ body{background:#ede8df;min-height:100vh;display:flex;align-items:flex-start;jus
 .mc-icon{font-size:22px;margin-bottom:6px;display:block;}
 .mc-name{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;color:var(--dark);}
 .mc-hint{font-size:9px;color:var(--muted);margin-top:2px;font-style:italic;}
-
+ 
 /* Genre */
 .genre-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
 .gp{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:var(--card);font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--muted);cursor:pointer;transition:all .2s;}
 .gp:hover{border-color:var(--accent);color:var(--dark);transform:translateY(-1px);}
 .gp.sel{border-color:var(--accent);background:var(--accent);color:white;}
-
+ 
 /* Character */
 .char-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
 @media(max-width:480px){.char-grid{grid-template-columns:1fr;}}
@@ -73,7 +65,7 @@ body{background:#ede8df;min-height:100vh;display:flex;align-items:flex-start;jus
 .step-btn:hover{background:var(--accent);color:white;}
 .step-btn.primary{background:var(--accent);color:white;}
 .step-btn.primary:hover{background:var(--accent2);}
-
+ 
 /* Titles */
 .title-card{border:1px solid var(--border);border-radius:7px;background:var(--card);margin-bottom:10px;transition:all .25s;overflow:hidden;}
 .title-card:hover:not(.dismissed):not(.chosen){border-color:var(--lm);box-shadow:0 2px 12px var(--shadow);}
@@ -93,7 +85,7 @@ body{background:#ede8df;min-height:100vh;display:flex;align-items:flex-start;jus
 .refresh-row{text-align:center;padding:8px 0 2px;}
 .rlnk{background:none;border:1px dashed var(--border);border-radius:20px;padding:7px 20px;color:var(--muted);font-size:13px;cursor:pointer;font-family:'EB Garamond',serif;transition:all .2s;}
 .rlnk:hover{border-color:var(--accent);color:var(--accent);}
-
+ 
 /* Story */
 .story-wrap{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:30px 34px;margin-bottom:18px;position:relative;}
 @media(max-width:480px){.story-wrap{padding:20px 18px;}}
@@ -107,12 +99,12 @@ body{background:#ede8df;min-height:100vh;display:flex;align-items:flex-start;jus
 .s-rule{display:flex;align-items:center;gap:14px;margin:20px 0 16px;}
 .s-rule::before,.s-rule::after{content:'';flex:1;height:1px;background:var(--border);}
 .s-rule-text{font-size:10px;letter-spacing:.3em;color:var(--lm);font-family:'Cormorant Garamond',serif;text-transform:uppercase;white-space:nowrap;}
-
+ 
 /* Continuation */
 .cont-wrap{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:30px 34px;margin-bottom:18px;position:relative;border-left:3px solid var(--lm);}
 @media(max-width:480px){.cont-wrap{padding:20px 18px;}}
 .cont-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--lm);margin-bottom:12px;font-family:'Cormorant Garamond',serif;}
-
+ 
 /* Story actions */
 .story-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
 .sa-btn{padding:8px 18px;border-radius:4px;font-size:13px;font-family:'Cormorant Garamond',serif;letter-spacing:.06em;cursor:pointer;transition:all .2s;border:1px solid var(--border);color:var(--muted);background:transparent;}
@@ -121,7 +113,7 @@ body{background:#ede8df;min-height:100vh;display:flex;align-items:flex-start;jus
 .sa-btn.accent:hover{background:var(--accent);color:white;}
 .sa-btn.primary{background:var(--accent);border-color:var(--accent);color:white;}
 .sa-btn.primary:hover{background:var(--accent2);}
-
+ 
 /* Music */
 .music-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
 @media(max-width:400px){.music-grid{grid-template-columns:1fr;}}
@@ -136,7 +128,7 @@ body{background:#ede8df;min-height:100vh;display:flex;align-items:flex-start;jus
 .yt-box{border-radius:8px;overflow:hidden;border:1px solid var(--border);margin-top:8px;}
 .yt-lnk{display:block;text-align:center;margin-top:8px;font-size:12px;color:var(--muted);text-decoration:none;letter-spacing:.05em;}
 .yt-lnk:hover{color:var(--accent);}
-
+ 
 /* Waiting */
 .waiting-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:32px 24px;text-align:center;}
 .waiting-msg{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--lm);margin-bottom:16px;}
@@ -145,7 +137,7 @@ body{background:#ede8df;min-height:100vh;display:flex;align-items:flex-start;jus
 .pulse-dot:nth-child(3){animation-delay:.4s;}
 @keyframes pd{0%,80%,100%{transform:scale(0.6);opacity:.4}40%{transform:scale(1);opacity:1}}
 .err-box{background:#fff8f5;border:1px solid #e8c8b0;border-radius:6px;padding:12px 16px;font-size:13px;color:#7a3e1e;margin-top:10px;line-height:1.5;}
-
+ 
 /* Export */
 .export-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:22px 24px;margin-bottom:10px;}
 .export-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--dark);margin-bottom:4px;}
@@ -155,13 +147,13 @@ body{background:#ede8df;min-height:100vh;display:flex;align-items:flex-start;jus
 .exp-btn:hover{background:var(--accent);color:white;}
 .exp-btn.primary{background:var(--accent);color:white;}
 .exp-btn.primary:hover{background:var(--accent2);}
-
+ 
 .fade-in{animation:fi .38s ease both;}
 @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
-
+ 
 <div id="sf">
   <div class="sf-header">
     <div class="sf-brand">
@@ -173,7 +165,7 @@ body{background:#ede8df;min-height:100vh;display:flex;align-items:flex-start;jus
   <div class="step-nav" id="stepnav"></div>
   <div class="body" id="root"></div>
 </div>
-
+ 
 <script>
 const MOODS=[
   {id:'melancholic',label:'Melancholic',icon:'🌧',hint:'Wistful, longing'},
@@ -298,10 +290,12 @@ const SONGS={
     {n:'Maruvaarthai',f:'Enai Noki Paayum Thota (2019)',id:'nTEBvQk8WwY',region:'Tamil'},
   ],
 };
-
+ 
 const REGIONS=['All','Hindi','Tamil','Telugu','Kannada'];
-
+ 
 // ── State ──────────────────────────────────────────────────────────────────────
+const OR_KEY='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';
+ 
 let S={
   step:1, mood:null, genre:null,
   charName:'', charSetting:'', charDetail:'',
@@ -311,36 +305,33 @@ let S={
   story:null, continuation:null,
   selectedMusic:null, musicRegion:'All',
   error:null,
-  apiKey: localStorage.getItem('sf_apikey')||'',
 };
-
+ 
 function restart(){
   S={
     step:1,mood:null,genre:null,charName:'',charSetting:'',charDetail:'',
     titles:[],rejectedTitles:new Set(),acceptedTitle:null,acceptedTagline:null,
     waitingFor:null,story:null,continuation:null,selectedMusic:null,
     musicRegion:'All',error:null,
-    apiKey:S.apiKey,
   };
   render();
 }
-
+ 
 // ── API call ───────────────────────────────────────────────────────────────────
 async function callClaude(sys, user, maxTokens=1200){
-  if(!S.apiKey) throw new Error('No API key set. Please enter your Anthropic API key above.');
-  const res=await fetch('https://api.anthropic.com/v1/messages',{
+  const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
     method:'POST',
     headers:{
       'Content-Type':'application/json',
-      'x-api-key': S.apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
+      'Authorization':'Bearer '+OR_KEY,
     },
     body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
+      model:'anthropic/claude-sonnet-4',
       max_tokens:maxTokens,
-      system:sys,
-      messages:[{role:'user',content:user}]
+      messages:[
+        {role:'system',content:sys},
+        {role:'user',content:user}
+      ]
     })
   });
   if(!res.ok){
@@ -348,13 +339,12 @@ async function callClaude(sys, user, maxTokens=1200){
     throw new Error(err.error?.message||'API error '+res.status);
   }
   const d=await res.json();
-  return d.content.map(b=>b.text||'').join('');
+  return d.choices[0].message.content;
 }
-
+ 
 // ── Fetch actions ──────────────────────────────────────────────────────────────
 async function fetchTitles(){
   S.titles=[]; S.error=null;
-  if(!S.apiKey){ S.step=4; S.error='No API key — please enter your Anthropic API key at the top.'; render(); return; }
   S.waitingFor='titles'; S.step=4; render();
   try{
     const charHint=S.charName?`\nProtagonist name: ${S.charName}`:'';
@@ -368,9 +358,8 @@ Each title should be evocative, poetic, and feel like a real published novel. Ta
     S.titles=parsed.titles; S.waitingFor=null; render();
   } catch(e){ console.error('fetchTitles failed:', e); S.waitingFor=null; S.error='Error: '+e.message; render(); }
 }
-
+ 
 async function fetchStory(title, tagline){
-  if(!S.apiKey){ S.error='Please enter your Anthropic API key first.'; render(); return; }
   S.waitingFor='story'; S.error=null; S.step=5; render();
   try{
     const charLine=S.charName?`The protagonist's name is ${S.charName}.`:'';
@@ -384,9 +373,8 @@ Write 6 paragraphs. Return ONLY the story text — no title, no author note, par
     S.story=raw.trim(); S.waitingFor=null; render();
   } catch(e){ S.waitingFor=null; S.error='Could not write the story: '+e.message; render(); }
 }
-
+ 
 async function fetchContinuation(){
-  if(!S.apiKey){ S.error='Please enter your Anthropic API key first.'; render(); return; }
   S.waitingFor='continuation'; S.error=null; render();
   try{
     const sys=`You are a master short story writer. You are continuing a story that has already been written.
@@ -397,10 +385,10 @@ Return ONLY the continuation text — no heading, paragraphs separated by blank 
     S.continuation=raw.trim(); S.waitingFor=null; render();
   } catch(e){ S.waitingFor=null; S.error='Could not continue the story: '+e.message; render(); }
 }
-
+ 
 // ── Navigation ─────────────────────────────────────────────────────────────────
 const STEPS=['Mood','Genre','Characters','Titles','Story','Music & Export'];
-
+ 
 function renderNav(){
   const nav=document.getElementById('stepnav'); nav.innerHTML='';
   STEPS.forEach((s,i)=>{
@@ -410,12 +398,11 @@ function renderNav(){
     nav.appendChild(d);
   });
 }
-
+ 
 // ── Main render ────────────────────────────────────────────────────────────────
 function render(){
   renderNav();
   const root=document.getElementById('root'); root.innerHTML='';
-  renderApiKey(root);
   renderMood(root);
   if(S.step>=2) renderGenre(root);
   if(S.step>=3) renderCharacter(root);
@@ -423,44 +410,7 @@ function render(){
   if(S.step>=5) renderStory(root);
   if(S.step>=6) renderMusicExport(root);
 }
-
-// ── API Key UI ─────────────────────────────────────────────────────────────────
-function renderApiKey(root){
-  const wrap=el('div','apikey-wrap');
-  wrap.innerHTML=`<p>Enter your <a href="https://console.anthropic.com/settings/keys" target="_blank">Anthropic API key</a> to generate stories. Your key is stored only in this browser.</p>`;
-  const row=el('div','apikey-row');
-  const inp=document.createElement('input');
-  inp.type='password'; inp.placeholder='sk-ant-…'; inp.value=S.apiKey;
-  inp.oninput=e=>{ S.apiKey=e.target.value.trim(); localStorage.setItem('sf_apikey',S.apiKey); };
-
-  const testBtn=el('button','step-btn');
-  testBtn.textContent='Test key';
-  testBtn.onclick=async()=>{
-    if(!S.apiKey){ alert('Please enter an API key first.'); return; }
-    testBtn.textContent='Testing…'; testBtn.disabled=true;
-    try{
-      const res=await fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-          'x-api-key':S.apiKey,
-          'anthropic-version':'2023-06-01',
-          'anthropic-dangerous-direct-browser-access':'true',
-        },
-        body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:10,messages:[{role:'user',content:'Hi'}]})
-      });
-      const d=await res.json();
-      if(res.ok){ testBtn.textContent='✓ Key works!'; testBtn.style.color='green'; }
-      else{ testBtn.textContent='✗ '+res.status; alert('API error: '+(d.error?.message||JSON.stringify(d))); }
-    } catch(e){ testBtn.textContent='✗ Network error'; alert('Network/CORS error: '+e.message+'. Try opening this file from a local server or use a browser that allows CORS.'); }
-    testBtn.disabled=false;
-  };
-
-  row.appendChild(inp); row.appendChild(testBtn);
-  wrap.appendChild(row);
-  root.appendChild(wrap);
-}
-
+ 
 // ── Step renderers ─────────────────────────────────────────────────────────────
 function renderMood(root){
   const w=el('div','section fade-in');
@@ -474,7 +424,7 @@ function renderMood(root){
   });
   w.appendChild(g); root.appendChild(w);
 }
-
+ 
 function renderGenre(root){
   orn(root);
   const w=el('div','section fade-in');
@@ -493,13 +443,13 @@ function renderGenre(root){
   });
   w.appendChild(row); root.appendChild(w);
 }
-
+ 
 function renderCharacter(root){
   orn(root);
   const w=el('div','section fade-in');
   w.innerHTML=`<div class="ey">Step 3 of 6</div><div class="hd">Shape your story</div>`;
   const grid=el('div','char-grid');
-
+ 
   const fields=[
     {key:'charName',label:"Protagonist's name",placeholder:'e.g. Leila, Arjun, Meera…',type:'text'},
     {key:'charSetting',label:'Setting / Place',placeholder:'e.g. Bombay 1987, a hill town…',type:'text'},
@@ -510,15 +460,15 @@ function renderCharacter(root){
     fd.querySelector('input').oninput=e=>{ S[f.key]=e.target.value; };
     grid.appendChild(fd);
   });
-
+ 
   const fd2=el('div','char-field');
   fd2.style.gridColumn='1/-1';
   fd2.innerHTML=`<label>A detail or secret (optional)</label><input type="text" placeholder="e.g. She hasn't spoken to her father in ten years…" value="${S.charDetail||''}">`;
   fd2.querySelector('input').oninput=e=>{ S.charDetail=e.target.value; };
   grid.appendChild(fd2);
-
+ 
   w.appendChild(grid);
-
+ 
   const actions=el('div','');
   actions.style.display='flex'; actions.style.gap='14px'; actions.style.alignItems='center'; actions.style.flexWrap='wrap';
   const btn=el('button','step-btn primary'); btn.textContent='Generate Titles →';
@@ -529,12 +479,12 @@ function renderCharacter(root){
   w.appendChild(actions);
   root.appendChild(w);
 }
-
+ 
 function renderTitles(root){
   orn(root);
   const w=el('div','section fade-in');
   w.innerHTML=`<div class="ey">Step 4 of 6</div><div class="hd">Choose the story you want told</div>`;
-
+ 
   if(S.waitingFor==='titles'){
     w.appendChild(waitingBox('Conjuring three titles…'));
     root.appendChild(w); return;
@@ -548,7 +498,7 @@ function renderTitles(root){
       root.appendChild(w); return;
     }
   }
-
+ 
   const allDismissed=S.titles.length>0&&S.titles.every(t=>S.rejectedTitles.has(t.title));
   S.titles.forEach(t=>{
     const isDis=S.rejectedTitles.has(t.title),isCho=S.acceptedTitle===t.title;
@@ -564,7 +514,7 @@ function renderTitles(root){
       card.querySelector('.tbtn-n').onclick=()=>{ S.rejectedTitles.add(t.title); render(); };
     }
   });
-
+ 
   if(allDismissed&&!S.acceptedTitle){
     const rb=el('div','refresh-row');
     const btn=el('button','rlnk'); btn.textContent='↻ Show me three new titles';
@@ -573,12 +523,12 @@ function renderTitles(root){
   }
   root.appendChild(w);
 }
-
+ 
 function renderStory(root){
   orn(root);
   const w=el('div','section fade-in');
   w.innerHTML=`<div class="ey">Step 5 of 6</div><div class="hd">Your story</div>`;
-
+ 
   if(S.waitingFor==='story'){
     w.appendChild(waitingBox('Writing your story… this takes a moment.'));
     root.appendChild(w); return;
@@ -592,12 +542,12 @@ function renderStory(root){
     root.appendChild(w); return;
   }
   if(!S.story){ root.appendChild(w); return; }
-
+ 
   const paras=S.story.split(/\n+/).filter(p=>p.trim());
   const box=el('div','story-wrap');
   box.innerHTML=`<div class="s-title">${S.acceptedTitle}</div><div class="s-tagline">${S.acceptedTagline}</div><div class="s-meta">${S.mood} · ${S.genre}${S.charName?' · '+S.charName:''}</div><div class="s-body">${paras.map(p=>`<p>${p}</p>`).join('')}</div>`;
   w.appendChild(box);
-
+ 
   if(S.waitingFor==='continuation'){
     w.appendChild(waitingBox('Continuing your story…'));
   } else if(S.continuation){
@@ -606,12 +556,12 @@ function renderStory(root){
     cbox.innerHTML=`<div class="cont-label">↓ Continued</div><div class="s-body">${cont.map(p=>`<p>${p}</p>`).join('')}</div>`;
     w.appendChild(cbox);
   }
-
+ 
   if(!S.waitingFor){
     const rule=el('div','s-rule');
     rule.innerHTML=`<span class="s-rule-text">~ End ~</span>`;
     w.appendChild(rule);
-
+ 
     const actions=el('div','story-actions');
     if(!S.continuation){
       const contBtn=el('button','sa-btn accent'); contBtn.textContent='↓ Continue the story';
@@ -625,21 +575,21 @@ function renderStory(root){
     actions.appendChild(rewriteBtn); actions.appendChild(musicBtn);
     w.appendChild(actions);
   }
-
+ 
   if(S.error&&S.story){
     const e=el('div','err-box'); e.textContent=S.error; w.appendChild(e);
   }
   root.appendChild(w);
 }
-
+ 
 function renderMusicExport(root){
   if(!S.story) return;
   orn(root);
   const w=el('div','section fade-in');
   w.innerHTML=`<div class="ey">Step 6 of 6</div><div class="hd">Music & Export</div>`;
-
+ 
   const songs=(SONGS[S.mood]||SONGS.melancholic).filter(s=>S.musicRegion==='All'||s.region===S.musicRegion);
-
+ 
   const tabs=el('div','music-tabs');
   REGIONS.forEach(r=>{
     const t=el('div','mtab'+(S.musicRegion===r?' active':''));
@@ -648,7 +598,7 @@ function renderMusicExport(root){
     tabs.appendChild(t);
   });
   w.appendChild(tabs);
-
+ 
   const grid=el('div','music-grid');
   songs.forEach(s=>{
     const c=el('div','sg'+(S.selectedMusic===s.n?' sel':''));
@@ -657,32 +607,40 @@ function renderMusicExport(root){
     grid.appendChild(c);
   });
   w.appendChild(grid);
-
+ 
   if(S.selectedMusic){
     const song=songs.find(s=>s.n===S.selectedMusic);
     if(song){
-      const ytUrl=`https://www.youtube.com/watch?v=${song.id}`;
-      const thumb=`https://img.youtube.com/vi/${song.id}/hqdefault.jpg`;
+      const query=encodeURIComponent(song.n+' '+song.f);
+      const searchUrl=`https://www.youtube.com/results?search_query=${query}`;
       const box=el('div','yt-box');
-      box.innerHTML=`<a href="${ytUrl}" target="_blank" style="display:block;position:relative;cursor:pointer;"><img src="${thumb}" style="width:100%;height:160px;object-fit:cover;display:block;" onerror="this.style.background='#2c1f0e';this.style.height='80px'"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);"><div style="width:54px;height:54px;background:rgba(196,120,58,.95);border-radius:50%;display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:19px solid white;margin-left:5px;"></div></div></div><div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.75));padding:20px 14px 12px;"><div style="color:white;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;">${song.n}</div><div style="color:rgba(255,255,255,.7);font-size:11px;font-style:italic;">${song.f}</div></div></a>`;
+      box.style.cssText='padding:28px 24px;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-top:8px;';
+      box.innerHTML=`
+        <div style="font-size:32px;margin-bottom:10px;">🎵</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--dark);margin-bottom:4px;">${song.n}</div>
+        <div style="font-size:13px;color:var(--muted);font-style:italic;margin-bottom:20px;">${song.f}</div>
+        <a href="${searchUrl}" target="_blank" rel="noopener noreferrer"
+           style="display:inline-block;padding:10px 28px;background:var(--accent);color:white;border-radius:4px;font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:.06em;text-decoration:none;transition:background .2s;"
+           onmouseover="this.style.background='#a85f28'" onmouseout="this.style.background='#c4783a'">
+          ▶ Play on YouTube
+        </a>
+      `;
       w.appendChild(box);
-      const lnk=el('a','yt-lnk'); lnk.href=ytUrl; lnk.target='_blank';
-      lnk.textContent='↗ Open in YouTube'; w.appendChild(lnk);
     }
   }
-
+ 
   orn(w);
-
+ 
   const expCard=el('div','export-card');
   expCard.innerHTML=`<div class="export-title">Export your story</div><div class="export-desc">Take it with you — copy, download, or share.</div>`;
   const expBtns=el('div','export-btns');
-
+ 
   const copyBtn=el('button','exp-btn primary'); copyBtn.textContent='Copy text';
   copyBtn.onclick=()=>{
     const full=`${S.acceptedTitle}\n${S.acceptedTagline}\n\n${S.story}${S.continuation?'\n\n'+S.continuation:''}`;
     navigator.clipboard.writeText(full).then(()=>{ copyBtn.textContent='✓ Copied!'; setTimeout(()=>copyBtn.textContent='Copy text',2000); });
   };
-
+ 
   const dlBtn=el('button','exp-btn'); dlBtn.textContent='Download .txt';
   dlBtn.onclick=()=>{
     const full=`${S.acceptedTitle}\n${S.acceptedTagline}\n\n${S.story}${S.continuation?'\n\n'+S.continuation:''}`;
@@ -690,7 +648,7 @@ function renderMusicExport(root){
     const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
     a.download=`${S.acceptedTitle.replace(/\s+/g,'_')}.txt`; a.click();
   };
-
+ 
   const htmlBtn=el('button','exp-btn'); htmlBtn.textContent='Download as page';
   htmlBtn.onclick=()=>{
     const full=S.story+(S.continuation?'\n\n'+S.continuation:'');
@@ -700,13 +658,13 @@ function renderMusicExport(root){
     const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
     a.download=`${S.acceptedTitle.replace(/\s+/g,'_')}.html`; a.click();
   };
-
+ 
   expBtns.appendChild(copyBtn); expBtns.appendChild(dlBtn); expBtns.appendChild(htmlBtn);
   expCard.appendChild(expBtns);
   w.appendChild(expCard);
   root.appendChild(w);
 }
-
+ 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 function waitingBox(msg){
   const b=el('div','waiting-box');
@@ -715,8 +673,9 @@ function waitingBox(msg){
 }
 function el(tag,cls){const e=document.createElement(tag);if(cls)e.className=cls;return e;}
 function orn(root){const d=el('div','orn');d.textContent='✦  ✦  ✦';root.appendChild(d);}
-
+ 
 render();
 </script>
 </body>
 </html>
+ 
