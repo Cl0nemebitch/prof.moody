@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Story Forge — A tale written just for you</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1208;--paper:#fdf8f0;--aged:#f5ead6;--accent:#c4783a;--accent2:#a85f28;
+  --muted:#8a7458;--lm:#c9b898;--border:#ddd0b8;--dark:#2c1f0e;
+  --card:#fff;--surface:#faf4e8;--shadow:rgba(44,31,14,.07);
+}
+body{background:#ede8df;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px 12px;}
+#sf{background:var(--paper);min-height:500px;font-family:'EB Garamond',serif;color:var(--ink);border-radius:10px;overflow:hidden;width:100%;max-width:700px;box-shadow:0 4px 32px rgba(44,31,14,.13);}
+.sf-header{background:var(--ink);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;}
+.sf-brand{}
+.sf-logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;color:var(--aged);}
+.sf-logo span{color:var(--accent);font-style:italic;}
+.sf-sub{font-size:10px;letter-spacing:.22em;color:#7a6848;text-transform:uppercase;margin-top:3px;}
+.sf-restart{background:none;border:1px solid #3a2c18;border-radius:4px;padding:6px 14px;color:#7a6848;font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:'Cormorant Garamond',serif;transition:all .2s;}
+.sf-restart:hover{border-color:#7a6848;color:var(--aged);}
+.step-nav{display:flex;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto;scrollbar-width:none;}
+.step-nav::-webkit-scrollbar{display:none;}
+.sni{flex-shrink:0;padding:11px 14px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#c9b898;border-bottom:2px solid transparent;font-family:'Cormorant Garamond',serif;transition:all .25s;white-space:nowrap;cursor:default;}
+.sni.active{color:var(--accent);border-bottom-color:var(--accent);}
+.sni.done{color:var(--muted);}
+.body{padding:26px 26px 36px;}
+.section{margin-bottom:4px;}
+.ey{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--lm);margin-bottom:6px;font-family:'Cormorant Garamond',serif;}
+.hd{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;font-style:italic;color:var(--dark);margin-bottom:18px;}
+.orn{text-align:center;color:var(--border);font-size:13px;letter-spacing:.4em;margin:22px 0;font-family:'Cormorant Garamond',serif;}
+
+/* API key prompt */
+.apikey-wrap{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:22px 24px;margin-bottom:16px;}
+.apikey-wrap p{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:10px;line-height:1.6;}
+.apikey-wrap a{color:var(--accent);text-decoration:none;}
+.apikey-wrap a:hover{text-decoration:underline;}
+.apikey-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.apikey-row input{flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--border);border-radius:5px;background:var(--card);font-family:'EB Garamond',serif;font-size:15px;color:var(--ink);outline:none;transition:border .2s;}
+.apikey-row input:focus{border-color:var(--accent);}
+
+/* Mood */
+.mood-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px;}
+@media(max-width:480px){.mood-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:340px){.mood-grid{grid-template-columns:repeat(2,1fr);}}
+.mc{padding:13px 8px 11px;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:var(--card);transition:all .2s;text-align:center;position:relative;overflow:hidden;}
+.mc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transition:transform .22s;}
+.mc:hover::after,.mc.sel::after{transform:scaleX(1);}
+.mc:hover{border-color:var(--lm);transform:translateY(-1px);}
+.mc.sel{border-color:var(--accent);background:#fdf5ec;}
+.mc-icon{font-size:22px;margin-bottom:6px;display:block;}
+.mc-name{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;color:var(--dark);}
+.mc-hint{font-size:9px;color:var(--muted);margin-top:2px;font-style:italic;}
+
+/* Genre */
+.genre-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+.gp{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:var(--card);font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--muted);cursor:pointer;transition:all .2s;}
+.gp:hover{border-color:var(--accent);color:var(--dark);transform:translateY(-1px);}
+.gp.sel{border-color:var(--accent);background:var(--accent);color:white;}
+
+/* Character */
+.char-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
+@media(max-width:480px){.char-grid{grid-template-columns:1fr;}}
+.char-field label{display:block;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--lm);margin-bottom:5px;font-family:'Cormorant Garamond',serif;}
+.char-field input,.char-field select{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:5px;background:var(--card);font-family:'EB Garamond',serif;font-size:15px;color:var(--ink);outline:none;transition:border .2s;}
+.char-field input:focus,.char-field select:focus{border-color:var(--accent);}
+.char-field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a7458'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;}
+.char-skip{font-size:12px;color:var(--muted);font-style:italic;cursor:pointer;text-decoration:underline;text-decoration-color:var(--border);}
+.char-skip:hover{color:var(--accent);}
+.step-btn{display:inline-block;margin-top:14px;padding:9px 24px;border-radius:4px;font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:.06em;cursor:pointer;border:1px solid var(--accent);color:var(--accent);background:transparent;transition:all .2s;}
+.step-btn:hover{background:var(--accent);color:white;}
+.step-btn.primary{background:var(--accent);color:white;}
+.step-btn.primary:hover{background:var(--accent2);}
+
+/* Titles */
+.title-card{border:1px solid var(--border);border-radius:7px;background:var(--card);margin-bottom:10px;transition:all .25s;overflow:hidden;}
+.title-card:hover:not(.dismissed):not(.chosen){border-color:var(--lm);box-shadow:0 2px 12px var(--shadow);}
+.title-card.dismissed{opacity:.25;pointer-events:none;}
+.title-card.chosen{border-color:var(--accent);background:#fffbf5;}
+.tci{padding:16px 18px;}
+.tc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.tc-t{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--dark);margin-bottom:4px;}
+.tc-tl{font-size:13px;color:var(--muted);font-style:italic;line-height:1.5;}
+.tc-btns{display:flex;gap:6px;flex-shrink:0;}
+.tbtn{padding:5px 13px;border-radius:20px;font-size:11px;letter-spacing:.05em;cursor:pointer;transition:all .15s;font-family:'Cormorant Garamond',serif;border:1px solid;}
+.tbtn-y{border-color:var(--accent);color:var(--accent);background:transparent;}
+.tbtn-y:hover{background:var(--accent);color:white;}
+.tbtn-n{border-color:#ddd;color:#bbb;background:transparent;}
+.tbtn-n:hover{border-color:#bbb;color:#999;}
+.chosen-badge{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);padding-top:8px;font-family:'Cormorant Garamond',serif;}
+.refresh-row{text-align:center;padding:8px 0 2px;}
+.rlnk{background:none;border:1px dashed var(--border);border-radius:20px;padding:7px 20px;color:var(--muted);font-size:13px;cursor:pointer;font-family:'EB Garamond',serif;transition:all .2s;}
+.rlnk:hover{border-color:var(--accent);color:var(--accent);}
+
+/* Story */
+.story-wrap{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:30px 34px;margin-bottom:18px;position:relative;}
+@media(max-width:480px){.story-wrap{padding:20px 18px;}}
+.story-wrap::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);border-radius:8px 0 0 8px;}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--dark);margin-bottom:4px;}
+.s-tagline{font-size:14px;color:var(--muted);font-style:italic;margin-bottom:6px;}
+.s-meta{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--lm);margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.s-body{font-size:17px;line-height:1.95;color:#2a1e0d;}
+.s-body p{margin-bottom:1em;}
+.s-body p:first-child::first-letter{float:left;font-family:'Cormorant Garamond',serif;font-size:66px;line-height:.78;padding-right:10px;padding-top:8px;color:var(--accent);font-weight:600;}
+.s-rule{display:flex;align-items:center;gap:14px;margin:20px 0 16px;}
+.s-rule::before,.s-rule::after{content:'';flex:1;height:1px;background:var(--border);}
+.s-rule-text{font-size:10px;letter-spacing:.3em;color:var(--lm);font-family:'Cormorant Garamond',serif;text-transform:uppercase;white-space:nowrap;}
+
+/* Continuation */
+.cont-wrap{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:30px 34px;margin-bottom:18px;position:relative;border-left:3px solid var(--lm);}
+@media(max-width:480px){.cont-wrap{padding:20px 18px;}}
+.cont-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--lm);margin-bottom:12px;font-family:'Cormorant Garamond',serif;}
+
+/* Story actions */
+.story-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
+.sa-btn{padding:8px 18px;border-radius:4px;font-size:13px;font-family:'Cormorant Garamond',serif;letter-spacing:.06em;cursor:pointer;transition:all .2s;border:1px solid var(--border);color:var(--muted);background:transparent;}
+.sa-btn:hover{border-color:var(--accent);color:var(--accent);}
+.sa-btn.accent{border-color:var(--accent);color:var(--accent);}
+.sa-btn.accent:hover{background:var(--accent);color:white;}
+.sa-btn.primary{background:var(--accent);border-color:var(--accent);color:white;}
+.sa-btn.primary:hover{background:var(--accent2);}
+
+/* Music */
+.music-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
+@media(max-width:400px){.music-grid{grid-template-columns:1fr;}}
+.sg{border:1px solid var(--border);border-radius:6px;padding:12px 14px;cursor:pointer;background:var(--card);transition:all .2s;display:flex;align-items:center;gap:10px;}
+.sg:hover{border-color:var(--lm);transform:translateY(-1px);}
+.sg.sel{border-color:var(--accent);background:#fffbf5;}
+.sg-name{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;color:var(--dark);}
+.sg-film{font-size:11px;color:var(--muted);font-style:italic;}
+.music-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.mtab{padding:5px 14px;border-radius:20px;border:1px solid var(--border);font-size:12px;font-family:'Cormorant Garamond',serif;color:var(--muted);cursor:pointer;transition:all .2s;}
+.mtab.active{border-color:var(--accent);color:var(--accent);background:#fdf5ec;}
+.yt-box{border-radius:8px;overflow:hidden;border:1px solid var(--border);margin-top:8px;}
+.yt-lnk{display:block;text-align:center;margin-top:8px;font-size:12px;color:var(--muted);text-decoration:none;letter-spacing:.05em;}
+.yt-lnk:hover{color:var(--accent);}
+
+/* Waiting */
+.waiting-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:32px 24px;text-align:center;}
+.waiting-msg{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--lm);margin-bottom:16px;}
+.pulse-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pd 1.4s ease-in-out infinite;}
+.pulse-dot:nth-child(2){animation-delay:.2s;margin:0 5px;}
+.pulse-dot:nth-child(3){animation-delay:.4s;}
+@keyframes pd{0%,80%,100%{transform:scale(0.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+.err-box{background:#fff8f5;border:1px solid #e8c8b0;border-radius:6px;padding:12px 16px;font-size:13px;color:#7a3e1e;margin-top:10px;line-height:1.5;}
+
+/* Export */
+.export-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:22px 24px;margin-bottom:10px;}
+.export-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--dark);margin-bottom:4px;}
+.export-desc{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:14px;}
+.export-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.exp-btn{padding:8px 18px;border-radius:4px;font-size:13px;font-family:'Cormorant Garamond',serif;cursor:pointer;border:1px solid var(--accent);color:var(--accent);background:transparent;transition:all .2s;letter-spacing:.04em;}
+.exp-btn:hover{background:var(--accent);color:white;}
+.exp-btn.primary{background:var(--accent);color:white;}
+.exp-btn.primary:hover{background:var(--accent2);}
+
+.fade-in{animation:fi .38s ease both;}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<div id="sf">
+  <div class="sf-header">
+    <div class="sf-brand">
+      <div class="sf-logo">Story <span>Forge</span></div>
+      <div class="sf-sub">A tale written just for you</div>
+    </div>
+    <button class="sf-restart" onclick="restart()">✦ Start Over</button>
+  </div>
+  <div class="step-nav" id="stepnav"></div>
+  <div class="body" id="root"></div>
+</div>
+
+<script>
+const MOODS=[
+  {id:'melancholic',label:'Melancholic',icon:'🌧',hint:'Wistful, longing'},
+  {id:'joyful',label:'Joyful',icon:'☀️',hint:'Bright, celebratory'},
+  {id:'mysterious',label:'Mysterious',icon:'🌙',hint:'Eerie, shadowed'},
+  {id:'tense',label:'Tense',icon:'⚡',hint:'Urgent, gripping'},
+  {id:'romantic',label:'Romantic',icon:'🌹',hint:'Tender, passionate'},
+  {id:'nostalgic',label:'Nostalgic',icon:'📻',hint:'Amber-lit, aching'},
+  {id:'hopeful',label:'Hopeful',icon:'🌅',hint:'Rising, yearning'},
+  {id:'fierce',label:'Fierce',icon:'🔥',hint:'Raw, defiant'},
+  {id:'peaceful',label:'Peaceful',icon:'🍃',hint:'Still, meditative'},
+  {id:'heartbroken',label:'Heartbroken',icon:'💔',hint:'Lost, grief-struck'},
+  {id:'euphoric',label:'Euphoric',icon:'✨',hint:'Ecstatic, electric'},
+  {id:'contemplative',label:'Contemplative',icon:'🪔',hint:'Searching, reflective'},
+];
+const GENRES=[
+  'Thriller','Romance','Sci-Fi','Fantasy','Horror','Slice of Life',
+  'Drama','Mystery','Coming of Age','Dark Comedy',
+  'Magical Realism','Road Trip','Family Saga','Workplace','Supernatural','Literary Fiction'
+];
+const SONGS={
+  melancholic:[
+    {n:'Tum Hi Ho',f:'Aashiqui 2 (2013)',id:'IJq0xySTBwc',region:'Hindi'},
+    {n:'Channa Mereya',f:'Ae Dil Hai Mushkil (2016)',id:'zaDF6OyOKGo',region:'Hindi'},
+    {n:'Kal Ho Naa Ho',f:'Kal Ho Naa Ho (2003)',id:'JxcRFhGZzHY',region:'Hindi'},
+    {n:'Woh Lamhe',f:'Zeher (2005)',id:'IDZ5AZ5LLAE',region:'Hindi'},
+    {n:'Tujhse Naraaz Nahi',f:'Masoom (1983)',id:'RuLMFOGjPts',region:'Hindi'},
+    {n:'Naan Un',f:'96 (2018)',id:'UqLkuVDGt5s',region:'Tamil'},
+    {n:'Kannazhaga',f:'3 (2012)',id:'Wa2SvDIz1XA',region:'Tamil'},
+    {n:'Ye Maaya Chesave',f:'Ye Maaya Chesave (2010)',id:'OE2YXPX0bHw',region:'Telugu'},
+    {n:'Manase Manase',f:'Mungaru Male (2006)',id:'iY3A1sB8Cuo',region:'Kannada'},
+  ],
+  joyful:[
+    {n:'Balam Pichkari',f:'Yeh Jawaani Hai Deewani (2013)',id:'cWGE7pMzBcU',region:'Hindi'},
+    {n:'Gallan Goodiyaan',f:'Dil Dhadakne Do (2015)',id:'ghdCBLbtnBE',region:'Hindi'},
+    {n:'London Thumakda',f:'Queen (2014)',id:'gdB6Q6KgFPE',region:'Hindi'},
+    {n:'Desi Girl',f:'Dostana (2008)',id:'pFcDBxFjkXw',region:'Hindi'},
+    {n:'Vaathi Coming',f:'Master (2021)',id:'wbsgKZCMaws',region:'Tamil'},
+    {n:'Naatu Naatu',f:'RRR (2022)',id:'OsU0CGZoV8E',region:'Telugu'},
+    {n:'Arabic Kuthu',f:'Beast (2022)',id:'oXEUEWS6GsE',region:'Tamil'},
+    {n:'Kutti Story',f:'Master (2021)',id:'gG5Ggmb1ASQ',region:'Tamil'},
+  ],
+  mysterious:[
+    {n:'Kun Faya Kun',f:'Rockstar (2011)',id:'T94PHkCRqYo',region:'Hindi'},
+    {n:'Roobaroo',f:'Rang De Basanti (2006)',id:'TkZzfasM6sI',region:'Hindi'},
+    {n:'Tu Bin Bataye',f:'Rang De Basanti (2006)',id:'_q0nNjxnY7k',region:'Hindi'},
+    {n:'Kadhal Rojave',f:'Roja (1992)',id:'9E8vBbmFHh8',region:'Tamil'},
+    {n:'Nuvvu Nuvvu',f:'Oopiri (2016)',id:'zBOvOkpXLV8',region:'Telugu'},
+    {n:'Nagumomu',f:'Geetha Govindam (2018)',id:'4yGYIKdlZxo',region:'Telugu'},
+  ],
+  tense:[
+    {n:'Sadda Haq',f:'Rockstar (2011)',id:'_Bwu_HpFpKc',region:'Hindi'},
+    {n:'Zinda',f:'Bhaag Milkha Bhaag (2013)',id:'nfb_JBzHPMI',region:'Hindi'},
+    {n:'Bismil',f:'Haider (2014)',id:'piWJ2HYr_eY',region:'Hindi'},
+    {n:'Khoon Chala',f:'Rang De Basanti (2006)',id:'EFEmTsfQU5k',region:'Hindi'},
+    {n:'Udhungada Sangu',f:'Velaiyilla Pattathari (2014)',id:'SlfmNfRqVak',region:'Tamil'},
+    {n:'Simtaangaran',f:'Sarkar (2018)',id:'CGBC44h-IQ4',region:'Tamil'},
+  ],
+  romantic:[
+    {n:'Tujh Mein Rab Dikhta Hai',f:'Rab Ne Bana Di Jodi (2008)',id:'Q1Bpb14O3MY',region:'Hindi'},
+    {n:'Tere Liye',f:'Veer-Zaara (2004)',id:'C1K7LqmDJZk',region:'Hindi'},
+    {n:'Saans',f:'Jab Tak Hai Jaan (2012)',id:'lT5MvLJQLKM',region:'Hindi'},
+    {n:'Vinnaithaandi Varuvaayaa',f:'Vinnaithaandi Varuvaayaa (2010)',id:'JHNhVkzHVtY',region:'Tamil'},
+    {n:'Yem Pillo',f:'Geetha Govindam (2018)',id:'U9dZsZ3BCIQ',region:'Telugu'},
+    {n:'Inkem Inkem',f:'Geetha Govindam (2018)',id:'CRvyBCovGiI',region:'Telugu'},
+    {n:'Poo Pookum Osai',f:'Michael Madana Kama Rajan (1990)',id:'Yk5kxnbGGgM',region:'Tamil'},
+  ],
+  nostalgic:[
+    {n:'Yeh Dooriyan',f:'Love Aaj Kal (2009)',id:'FqdPy6BVPHU',region:'Hindi'},
+    {n:'Alvida',f:'Life in a Metro (2007)',id:'zk4IzIlsC3A',region:'Hindi'},
+    {n:'Abhi Mujh Mein Kahin',f:'Agneepath (2012)',id:'3q7KY-K0SNo',region:'Hindi'},
+    {n:'Enna Solla',f:'Pooveli (1996)',id:'PnBJU2eHfRk',region:'Tamil'},
+    {n:'Mannipaaya',f:'Vinnaithaandi Varuvaayaa (2010)',id:'njLgsPXBzho',region:'Tamil'},
+    {n:'Jab Koi Baat',f:'Jurm (1990)',id:'NsFRBBJIiEY',region:'Hindi'},
+  ],
+  hopeful:[
+    {n:'Phir Se Ud Chala',f:'Rockstar (2011)',id:'V_Xx7OT2P-o',region:'Hindi'},
+    {n:'Iktara',f:'Wake Up Sid (2009)',id:'3_7dDNwNFiQ',region:'Hindi'},
+    {n:'Nadaan Parindey',f:'Rockstar (2011)',id:'TRfNYWFGMmo',region:'Hindi'},
+    {n:'Swades Theme',f:'Swades (2004)',id:'IpgvdO_ZEI4',region:'Hindi'},
+    {n:'Kannaana Kanney',f:'Viswasam (2019)',id:'3U99UfuPFWY',region:'Tamil'},
+    {n:'Ninnukori',f:'Majili (2019)',id:'mh73Snd0-SE',region:'Telugu'},
+  ],
+  fierce:[
+    {n:'Sadda Haq',f:'Rockstar (2011)',id:'_Bwu_HpFpKc',region:'Hindi'},
+    {n:'Khoon Chala',f:'Rang De Basanti (2006)',id:'EFEmTsfQU5k',region:'Hindi'},
+    {n:'Zinda',f:'Bhaag Milkha Bhaag (2013)',id:'nfb_JBzHPMI',region:'Hindi'},
+    {n:'Vaathi Coming',f:'Master (2021)',id:'wbsgKZCMaws',region:'Tamil'},
+    {n:'Naatu Naatu',f:'RRR (2022)',id:'OsU0CGZoV8E',region:'Telugu'},
+    {n:'Simtaangaran',f:'Sarkar (2018)',id:'CGBC44h-IQ4',region:'Tamil'},
+  ],
+  peaceful:[
+    {n:'Kun Faya Kun',f:'Rockstar (2011)',id:'T94PHkCRqYo',region:'Hindi'},
+    {n:'Iktara',f:'Wake Up Sid (2009)',id:'3_7dDNwNFiQ',region:'Hindi'},
+    {n:'Luka Chuppi',f:'Rang De Basanti (2006)',id:'5uuOdXUgRjA',region:'Hindi'},
+    {n:'Nenjukulle',f:'Kadal (2013)',id:'GCSE3Ui-dTw',region:'Tamil'},
+    {n:'Nuvvostanante Nenoddantana',f:'SVSC (2013)',id:'Z5bRxMVQiV4',region:'Telugu'},
+    {n:'Maruvaarthai',f:'Enai Noki Paayum Thota (2019)',id:'nTEBvQk8WwY',region:'Tamil'},
+  ],
+  heartbroken:[
+    {n:'Tum Hi Ho',f:'Aashiqui 2 (2013)',id:'IJq0xySTBwc',region:'Hindi'},
+    {n:'Channa Mereya',f:'Ae Dil Hai Mushkil (2016)',id:'zaDF6OyOKGo',region:'Hindi'},
+    {n:'Hamari Adhuri Kahani',f:'Hamari Adhuri Kahani (2015)',id:'lYKGDSJx_7E',region:'Hindi'},
+    {n:'Kannazhaga',f:'3 (2012)',id:'Wa2SvDIz1XA',region:'Tamil'},
+    {n:'Naan Un',f:'96 (2018)',id:'UqLkuVDGt5s',region:'Tamil'},
+    {n:'Ee Varsham Sakshiga',f:'Ishq (2012)',id:'VTBo4MmLMJc',region:'Telugu'},
+  ],
+  euphoric:[
+    {n:'Senorita',f:'Zindagi Na Milegi Dobara (2011)',id:'7kJTonP2TkA',region:'Hindi'},
+    {n:'Balam Pichkari',f:'Yeh Jawaani Hai Deewani (2013)',id:'cWGE7pMzBcU',region:'Hindi'},
+    {n:'Dhoom Machale',f:'Dhoom (2004)',id:'RMQ0u_0p3DE',region:'Hindi'},
+    {n:'Arabic Kuthu',f:'Beast (2022)',id:'oXEUEWS6GsE',region:'Tamil'},
+    {n:'Naatu Naatu',f:'RRR (2022)',id:'OsU0CGZoV8E',region:'Telugu'},
+    {n:'London Thumakda',f:'Queen (2014)',id:'gdB6Q6KgFPE',region:'Hindi'},
+  ],
+  contemplative:[
+    {n:'Kabira',f:'Yeh Jawaani Hai Deewani (2013)',id:'3N0MFpKBXvs',region:'Hindi'},
+    {n:'Iktara',f:'Wake Up Sid (2009)',id:'3_7dDNwNFiQ',region:'Hindi'},
+    {n:'Nadaan Parindey',f:'Rockstar (2011)',id:'TRfNYWFGMmo',region:'Hindi'},
+    {n:'Phir Le Aaya Dil',f:'Barfi! (2012)',id:'sWfbOFDM5nA',region:'Hindi'},
+    {n:'Nenjukulle',f:'Kadal (2013)',id:'GCSE3Ui-dTw',region:'Tamil'},
+    {n:'Maruvaarthai',f:'Enai Noki Paayum Thota (2019)',id:'nTEBvQk8WwY',region:'Tamil'},
+  ],
+};
+
+const REGIONS=['All','Hindi','Tamil','Telugu','Kannada'];
+
+// ── State ──────────────────────────────────────────────────────────────────────
+let S={
+  step:1, mood:null, genre:null,
+  charName:'', charSetting:'', charDetail:'',
+  titles:[], rejectedTitles:new Set(),
+  acceptedTitle:null, acceptedTagline:null,
+  waitingFor:null,
+  story:null, continuation:null,
+  selectedMusic:null, musicRegion:'All',
+  error:null,
+  apiKey: localStorage.getItem('sf_apikey')||'',
+};
+
+function restart(){
+  S={
+    step:1,mood:null,genre:null,charName:'',charSetting:'',charDetail:'',
+    titles:[],rejectedTitles:new Set(),acceptedTitle:null,acceptedTagline:null,
+    waitingFor:null,story:null,continuation:null,selectedMusic:null,
+    musicRegion:'All',error:null,
+    apiKey:S.apiKey,
+  };
+  render();
+}
+
+// ── API call ───────────────────────────────────────────────────────────────────
+async function callClaude(sys, user, maxTokens=1200){
+  if(!S.apiKey) throw new Error('No API key set. Please enter your Anthropic API key above.');
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key': S.apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:maxTokens,
+      system:sys,
+      messages:[{role:'user',content:user}]
+    })
+  });
+  if(!res.ok){
+    const err=await res.json().catch(()=>({}));
+    throw new Error(err.error?.message||'API error '+res.status);
+  }
+  const d=await res.json();
+  return d.content.map(b=>b.text||'').join('');
+}
+
+// ── Fetch actions ──────────────────────────────────────────────────────────────
+async function fetchTitles(){
+  S.titles=[]; S.error=null;
+  if(!S.apiKey){ S.step=4; S.error='No API key — please enter your Anthropic API key at the top.'; render(); return; }
+  S.waitingFor='titles'; S.step=4; render();
+  try{
+    const charHint=S.charName?`\nProtagonist name: ${S.charName}`:'';
+    const settingHint=S.charSetting?`\nSetting: ${S.charSetting}`:'';
+    const detailHint=S.charDetail?`\nExtra detail: ${S.charDetail}`:'';
+    const sys=`You generate literary story titles. Respond ONLY with valid JSON, no markdown, no backticks.
+Format: {"titles":[{"title":"...","tagline":"..."},{"title":"...","tagline":"..."},{"title":"...","tagline":"..."}]}
+Each title should be evocative, poetic, and feel like a real published novel. Tagline is one beautiful sentence, 12-16 words, hinting at the story's soul.`;
+    const raw=await callClaude(sys,`Mood: ${S.mood}\nGenre: ${S.genre}${charHint}${settingHint}${detailHint}\n\nGenerate 3 distinct, original story titles.`);
+    const parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    S.titles=parsed.titles; S.waitingFor=null; render();
+  } catch(e){ console.error('fetchTitles failed:', e); S.waitingFor=null; S.error='Error: '+e.message; render(); }
+}
+
+async function fetchStory(title, tagline){
+  if(!S.apiKey){ S.error='Please enter your Anthropic API key first.'; render(); return; }
+  S.waitingFor='story'; S.error=null; S.step=5; render();
+  try{
+    const charLine=S.charName?`The protagonist's name is ${S.charName}.`:'';
+    const settingLine=S.charSetting?`Setting: ${S.charSetting}.`:'';
+    const detailLine=S.charDetail?`Additional detail: ${S.charDetail}.`:'';
+    const sys=`You are a master short story writer in the tradition of great literary fiction — Jhumpa Lahiri, R.K. Narayan, Arundhati Roy.
+Write in a natural, human voice. Avoid clichés, purple prose, and AI-sounding constructions like "the weight of", "a tapestry of", "in the hustle and bustle". 
+Use specific sensory detail. Let dialogue breathe. Trust the reader.
+Write 6 paragraphs. Return ONLY the story text — no title, no author note, paragraphs separated by blank lines.`;
+    const raw=await callClaude(sys,`Title: ${title}\nTagline: ${tagline}\nMood: ${S.mood}\nGenre: ${S.genre}\n${charLine}\n${settingLine}\n${detailLine}\n\nWrite the story now.`,1800);
+    S.story=raw.trim(); S.waitingFor=null; render();
+  } catch(e){ S.waitingFor=null; S.error='Could not write the story: '+e.message; render(); }
+}
+
+async function fetchContinuation(){
+  if(!S.apiKey){ S.error='Please enter your Anthropic API key first.'; render(); return; }
+  S.waitingFor='continuation'; S.error=null; render();
+  try{
+    const sys=`You are a master short story writer. You are continuing a story that has already been written.
+Write 3-4 more paragraphs that feel like a seamless continuation — same voice, same characters, same world.
+Do not recap what happened. Just continue naturally from where it ended.
+Return ONLY the continuation text — no heading, paragraphs separated by blank lines.`;
+    const raw=await callClaude(sys,`Original story:\n${S.story}\n\nContinue this story now.`,1400);
+    S.continuation=raw.trim(); S.waitingFor=null; render();
+  } catch(e){ S.waitingFor=null; S.error='Could not continue the story: '+e.message; render(); }
+}
+
+// ── Navigation ─────────────────────────────────────────────────────────────────
+const STEPS=['Mood','Genre','Characters','Titles','Story','Music & Export'];
+
+function renderNav(){
+  const nav=document.getElementById('stepnav'); nav.innerHTML='';
+  STEPS.forEach((s,i)=>{
+    const n=i+1,d=document.createElement('div');
+    d.className='sni'+(n===S.step?' active':n<S.step?' done':'');
+    d.textContent=(n===S.step?'→ ':n<S.step?'✓ ':'')+s;
+    nav.appendChild(d);
+  });
+}
+
+// ── Main render ────────────────────────────────────────────────────────────────
+function render(){
+  renderNav();
+  const root=document.getElementById('root'); root.innerHTML='';
+  renderApiKey(root);
+  renderMood(root);
+  if(S.step>=2) renderGenre(root);
+  if(S.step>=3) renderCharacter(root);
+  if(S.step>=4) renderTitles(root);
+  if(S.step>=5) renderStory(root);
+  if(S.step>=6) renderMusicExport(root);
+}
+
+// ── API Key UI ─────────────────────────────────────────────────────────────────
+function renderApiKey(root){
+  const wrap=el('div','apikey-wrap');
+  wrap.innerHTML=`<p>Enter your <a href="https://console.anthropic.com/settings/keys" target="_blank">Anthropic API key</a> to generate stories. Your key is stored only in this browser.</p>`;
+  const row=el('div','apikey-row');
+  const inp=document.createElement('input');
+  inp.type='password'; inp.placeholder='sk-ant-…'; inp.value=S.apiKey;
+  inp.oninput=e=>{ S.apiKey=e.target.value.trim(); localStorage.setItem('sf_apikey',S.apiKey); };
+
+  const testBtn=el('button','step-btn');
+  testBtn.textContent='Test key';
+  testBtn.onclick=async()=>{
+    if(!S.apiKey){ alert('Please enter an API key first.'); return; }
+    testBtn.textContent='Testing…'; testBtn.disabled=true;
+    try{
+      const res=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'x-api-key':S.apiKey,
+          'anthropic-version':'2023-06-01',
+          'anthropic-dangerous-direct-browser-access':'true',
+        },
+        body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:10,messages:[{role:'user',content:'Hi'}]})
+      });
+      const d=await res.json();
+      if(res.ok){ testBtn.textContent='✓ Key works!'; testBtn.style.color='green'; }
+      else{ testBtn.textContent='✗ '+res.status; alert('API error: '+(d.error?.message||JSON.stringify(d))); }
+    } catch(e){ testBtn.textContent='✗ Network error'; alert('Network/CORS error: '+e.message+'. Try opening this file from a local server or use a browser that allows CORS.'); }
+    testBtn.disabled=false;
+  };
+
+  row.appendChild(inp); row.appendChild(testBtn);
+  wrap.appendChild(row);
+  root.appendChild(wrap);
+}
+
+// ── Step renderers ─────────────────────────────────────────────────────────────
+function renderMood(root){
+  const w=el('div','section fade-in');
+  w.innerHTML=`<div class="ey">Step 1 of 6</div><div class="hd">How are you feeling right now?</div>`;
+  const g=el('div','mood-grid');
+  MOODS.forEach(m=>{
+    const c=el('div','mc'+(S.mood===m.id?' sel':''));
+    c.innerHTML=`<span class="mc-icon">${m.icon}</span><div class="mc-name">${m.label}</div><div class="mc-hint">${m.hint}</div>`;
+    c.onclick=()=>{ S.mood=m.id; if(S.step<2) S.step=2; render(); };
+    g.appendChild(c);
+  });
+  w.appendChild(g); root.appendChild(w);
+}
+
+function renderGenre(root){
+  orn(root);
+  const w=el('div','section fade-in');
+  w.innerHTML=`<div class="ey">Step 2 of 6</div><div class="hd">Pick your genre</div>`;
+  const row=el('div','genre-row');
+  GENRES.forEach(g=>{
+    const p=el('button','gp'+(S.genre===g?' sel':''));
+    p.textContent=g;
+    p.onclick=()=>{
+      S.genre=g; S.titles=[]; S.rejectedTitles=new Set();
+      S.acceptedTitle=null; S.story=null; S.continuation=null; S.selectedMusic=null;
+      if(S.step<3) S.step=3;
+      render();
+    };
+    row.appendChild(p);
+  });
+  w.appendChild(row); root.appendChild(w);
+}
+
+function renderCharacter(root){
+  orn(root);
+  const w=el('div','section fade-in');
+  w.innerHTML=`<div class="ey">Step 3 of 6</div><div class="hd">Shape your story</div>`;
+  const grid=el('div','char-grid');
+
+  const fields=[
+    {key:'charName',label:"Protagonist's name",placeholder:'e.g. Leila, Arjun, Meera…',type:'text'},
+    {key:'charSetting',label:'Setting / Place',placeholder:'e.g. Bombay 1987, a hill town…',type:'text'},
+  ];
+  fields.forEach(f=>{
+    const fd=el('div','char-field');
+    fd.innerHTML=`<label>${f.label}</label><input type="${f.type}" placeholder="${f.placeholder}" value="${S[f.key]||''}">`;
+    fd.querySelector('input').oninput=e=>{ S[f.key]=e.target.value; };
+    grid.appendChild(fd);
+  });
+
+  const fd2=el('div','char-field');
+  fd2.style.gridColumn='1/-1';
+  fd2.innerHTML=`<label>A detail or secret (optional)</label><input type="text" placeholder="e.g. She hasn't spoken to her father in ten years…" value="${S.charDetail||''}">`;
+  fd2.querySelector('input').oninput=e=>{ S.charDetail=e.target.value; };
+  grid.appendChild(fd2);
+
+  w.appendChild(grid);
+
+  const actions=el('div','');
+  actions.style.display='flex'; actions.style.gap='14px'; actions.style.alignItems='center'; actions.style.flexWrap='wrap';
+  const btn=el('button','step-btn primary'); btn.textContent='Generate Titles →';
+  btn.onclick=()=>fetchTitles();
+  const skip=el('span','char-skip'); skip.textContent='Skip — surprise me';
+  skip.onclick=()=>fetchTitles();
+  actions.appendChild(btn); actions.appendChild(skip);
+  w.appendChild(actions);
+  root.appendChild(w);
+}
+
+function renderTitles(root){
+  orn(root);
+  const w=el('div','section fade-in');
+  w.innerHTML=`<div class="ey">Step 4 of 6</div><div class="hd">Choose the story you want told</div>`;
+
+  if(S.waitingFor==='titles'){
+    w.appendChild(waitingBox('Conjuring three titles…'));
+    root.appendChild(w); return;
+  }
+  if(S.error){
+    const e=el('div','err-box'); e.textContent=S.error; w.appendChild(e);
+    if(!S.titles.length){
+      const rb=el('div','refresh-row');
+      const btn=el('button','rlnk'); btn.textContent='↻ Try again';
+      btn.onclick=()=>fetchTitles(); rb.appendChild(btn); w.appendChild(rb);
+      root.appendChild(w); return;
+    }
+  }
+
+  const allDismissed=S.titles.length>0&&S.titles.every(t=>S.rejectedTitles.has(t.title));
+  S.titles.forEach(t=>{
+    const isDis=S.rejectedTitles.has(t.title),isCho=S.acceptedTitle===t.title;
+    const card=el('div','title-card'+(isDis?' dismissed':isCho?' chosen':''));
+    card.innerHTML=`<div class="tci"><div class="tc-top"><div><div class="tc-t">${t.title}</div><div class="tc-tl">${t.tagline}</div></div>${!isDis&&!isCho?`<div class="tc-btns"><button class="tbtn tbtn-y">Write this</button><button class="tbtn tbtn-n">Dismiss</button></div>`:''}</div>${isCho?'<div class="chosen-badge">✓ Writing this story</div>':''}</div>`;
+    w.appendChild(card);
+    if(!isDis&&!isCho){
+      card.querySelector('.tbtn-y').onclick=()=>{
+        S.acceptedTitle=t.title; S.acceptedTagline=t.tagline;
+        S.step=5; S.story=null; S.continuation=null; S.selectedMusic=null;
+        fetchStory(t.title,t.tagline);
+      };
+      card.querySelector('.tbtn-n').onclick=()=>{ S.rejectedTitles.add(t.title); render(); };
+    }
+  });
+
+  if(allDismissed&&!S.acceptedTitle){
+    const rb=el('div','refresh-row');
+    const btn=el('button','rlnk'); btn.textContent='↻ Show me three new titles';
+    btn.onclick=()=>{ S.titles=[]; S.rejectedTitles=new Set(); fetchTitles(); };
+    rb.appendChild(btn); w.appendChild(rb);
+  }
+  root.appendChild(w);
+}
+
+function renderStory(root){
+  orn(root);
+  const w=el('div','section fade-in');
+  w.innerHTML=`<div class="ey">Step 5 of 6</div><div class="hd">Your story</div>`;
+
+  if(S.waitingFor==='story'){
+    w.appendChild(waitingBox('Writing your story… this takes a moment.'));
+    root.appendChild(w); return;
+  }
+  if(S.error&&!S.story){
+    const e=el('div','err-box'); e.textContent=S.error; w.appendChild(e);
+    const rb=el('div','refresh-row');
+    const btn=el('button','rlnk'); btn.textContent='↻ Try again';
+    btn.onclick=()=>fetchStory(S.acceptedTitle,S.acceptedTagline);
+    rb.appendChild(btn); w.appendChild(rb);
+    root.appendChild(w); return;
+  }
+  if(!S.story){ root.appendChild(w); return; }
+
+  const paras=S.story.split(/\n+/).filter(p=>p.trim());
+  const box=el('div','story-wrap');
+  box.innerHTML=`<div class="s-title">${S.acceptedTitle}</div><div class="s-tagline">${S.acceptedTagline}</div><div class="s-meta">${S.mood} · ${S.genre}${S.charName?' · '+S.charName:''}</div><div class="s-body">${paras.map(p=>`<p>${p}</p>`).join('')}</div>`;
+  w.appendChild(box);
+
+  if(S.waitingFor==='continuation'){
+    w.appendChild(waitingBox('Continuing your story…'));
+  } else if(S.continuation){
+    const cont=S.continuation.split(/\n+/).filter(p=>p.trim());
+    const cbox=el('div','cont-wrap');
+    cbox.innerHTML=`<div class="cont-label">↓ Continued</div><div class="s-body">${cont.map(p=>`<p>${p}</p>`).join('')}</div>`;
+    w.appendChild(cbox);
+  }
+
+  if(!S.waitingFor){
+    const rule=el('div','s-rule');
+    rule.innerHTML=`<span class="s-rule-text">~ End ~</span>`;
+    w.appendChild(rule);
+
+    const actions=el('div','story-actions');
+    if(!S.continuation){
+      const contBtn=el('button','sa-btn accent'); contBtn.textContent='↓ Continue the story';
+      contBtn.onclick=()=>fetchContinuation();
+      actions.appendChild(contBtn);
+    }
+    const rewriteBtn=el('button','sa-btn'); rewriteBtn.textContent='↻ Rewrite';
+    rewriteBtn.onclick=()=>{ S.story=null; S.continuation=null; fetchStory(S.acceptedTitle,S.acceptedTagline); };
+    const musicBtn=el('button','sa-btn primary'); musicBtn.textContent='Music & Export →';
+    musicBtn.onclick=()=>{ S.step=6; render(); };
+    actions.appendChild(rewriteBtn); actions.appendChild(musicBtn);
+    w.appendChild(actions);
+  }
+
+  if(S.error&&S.story){
+    const e=el('div','err-box'); e.textContent=S.error; w.appendChild(e);
+  }
+  root.appendChild(w);
+}
+
+function renderMusicExport(root){
+  if(!S.story) return;
+  orn(root);
+  const w=el('div','section fade-in');
+  w.innerHTML=`<div class="ey">Step 6 of 6</div><div class="hd">Music & Export</div>`;
+
+  const songs=(SONGS[S.mood]||SONGS.melancholic).filter(s=>S.musicRegion==='All'||s.region===S.musicRegion);
+
+  const tabs=el('div','music-tabs');
+  REGIONS.forEach(r=>{
+    const t=el('div','mtab'+(S.musicRegion===r?' active':''));
+    t.textContent=r;
+    t.onclick=()=>{ S.musicRegion=r; S.selectedMusic=null; render(); };
+    tabs.appendChild(t);
+  });
+  w.appendChild(tabs);
+
+  const grid=el('div','music-grid');
+  songs.forEach(s=>{
+    const c=el('div','sg'+(S.selectedMusic===s.n?' sel':''));
+    c.innerHTML=`<div style="font-size:18px">🎵</div><div><div class="sg-name">${s.n}</div><div class="sg-film">${s.f}</div></div>`;
+    c.onclick=()=>{ S.selectedMusic=s.n; render(); };
+    grid.appendChild(c);
+  });
+  w.appendChild(grid);
+
+  if(S.selectedMusic){
+    const song=songs.find(s=>s.n===S.selectedMusic);
+    if(song){
+      const ytUrl=`https://www.youtube.com/watch?v=${song.id}`;
+      const thumb=`https://img.youtube.com/vi/${song.id}/hqdefault.jpg`;
+      const box=el('div','yt-box');
+      box.innerHTML=`<a href="${ytUrl}" target="_blank" style="display:block;position:relative;cursor:pointer;"><img src="${thumb}" style="width:100%;height:160px;object-fit:cover;display:block;" onerror="this.style.background='#2c1f0e';this.style.height='80px'"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);"><div style="width:54px;height:54px;background:rgba(196,120,58,.95);border-radius:50%;display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:19px solid white;margin-left:5px;"></div></div></div><div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.75));padding:20px 14px 12px;"><div style="color:white;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;">${song.n}</div><div style="color:rgba(255,255,255,.7);font-size:11px;font-style:italic;">${song.f}</div></div></a>`;
+      w.appendChild(box);
+      const lnk=el('a','yt-lnk'); lnk.href=ytUrl; lnk.target='_blank';
+      lnk.textContent='↗ Open in YouTube'; w.appendChild(lnk);
+    }
+  }
+
+  orn(w);
+
+  const expCard=el('div','export-card');
+  expCard.innerHTML=`<div class="export-title">Export your story</div><div class="export-desc">Take it with you — copy, download, or share.</div>`;
+  const expBtns=el('div','export-btns');
+
+  const copyBtn=el('button','exp-btn primary'); copyBtn.textContent='Copy text';
+  copyBtn.onclick=()=>{
+    const full=`${S.acceptedTitle}\n${S.acceptedTagline}\n\n${S.story}${S.continuation?'\n\n'+S.continuation:''}`;
+    navigator.clipboard.writeText(full).then(()=>{ copyBtn.textContent='✓ Copied!'; setTimeout(()=>copyBtn.textContent='Copy text',2000); });
+  };
+
+  const dlBtn=el('button','exp-btn'); dlBtn.textContent='Download .txt';
+  dlBtn.onclick=()=>{
+    const full=`${S.acceptedTitle}\n${S.acceptedTagline}\n\n${S.story}${S.continuation?'\n\n'+S.continuation:''}`;
+    const blob=new Blob([full],{type:'text/plain'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download=`${S.acceptedTitle.replace(/\s+/g,'_')}.txt`; a.click();
+  };
+
+  const htmlBtn=el('button','exp-btn'); htmlBtn.textContent='Download as page';
+  htmlBtn.onclick=()=>{
+    const full=S.story+(S.continuation?'\n\n'+S.continuation:'');
+    const paras=full.split(/\n+/).filter(p=>p.trim());
+    const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${S.acceptedTitle}</title><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet"><style>body{max-width:640px;margin:60px auto;padding:0 24px;font-family:'Cormorant Garamond',serif;font-size:20px;line-height:2;color:#1a1208;background:#fdf8f0}h1{font-size:36px;font-weight:600;margin-bottom:6px}p.tag{color:#8a7458;font-style:italic;margin-bottom:8px;font-size:16px}p.meta{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#c9b898;margin-bottom:32px}p{margin-bottom:1em}p:first-of-type::first-letter{float:left;font-size:72px;line-height:.78;padding-right:10px;padding-top:8px;color:#c4783a;font-weight:600}.end{text-align:center;color:#c9b898;font-size:12px;letter-spacing:.3em;text-transform:uppercase;margin-top:40px}</style></head><body><h1>${S.acceptedTitle}</h1><p class="tag">${S.acceptedTagline}</p><p class="meta">${S.mood} · ${S.genre}</p>${paras.map(p=>`<p>${p}</p>`).join('')}<p class="end">~ End ~</p></body></html>`;
+    const blob=new Blob([html],{type:'text/html'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download=`${S.acceptedTitle.replace(/\s+/g,'_')}.html`; a.click();
+  };
+
+  expBtns.appendChild(copyBtn); expBtns.appendChild(dlBtn); expBtns.appendChild(htmlBtn);
+  expCard.appendChild(expBtns);
+  w.appendChild(expCard);
+  root.appendChild(w);
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────────────
+function waitingBox(msg){
+  const b=el('div','waiting-box');
+  b.innerHTML=`<p class="waiting-msg">${msg}</p><div><span class="pulse-dot"></span><span class="pulse-dot"></span><span class="pulse-dot"></span></div>`;
+  return b;
+}
+function el(tag,cls){const e=document.createElement(tag);if(cls)e.className=cls;return e;}
+function orn(root){const d=el('div','orn');d.textContent='✦  ✦  ✦';root.appendChild(d);}
+
+render();
+</script>
+</body>
+</html>
